@@ -9,11 +9,14 @@ typeIsArray = ( value ) ->
         typeof value.splice is 'function' and
         not ( value.propertyIsEnumerable 'length' )
 
-window.client = new Faye.Client('/faye')
+#window.client = new Faye.Client('/faye')
+window.client = new Faye.Client('http://drakenfaye.herokuapp.com/faye
+')
+
 
 
 
 jQuery ->
   client.subscribe userid, (payload) ->
 
-    $('.panel-body').append("<ul>"+looper+"</ul>") for looper in payload.message 
+    $('.panel-body').append("<ul>"+looper+"</ul>") for looper in payload.message
