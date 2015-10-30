@@ -147,7 +147,7 @@ def sendtoplayer2(player, tosend)
 
 
   #client = Faye::Client.new('http://localhost:8080/faye')
-  client = Faye::Client.new('http://drakenfaye.herokuapp.com/faye')
+  client = Faye::Client.new('https://drakenfaye.herokuapp.com/faye')
 
   client.publish("/link#{player.id}", {
   :message => packet
