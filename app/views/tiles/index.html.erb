@@ -1,0 +1,24 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Panel</div>
+  <div class="panel-body">
+  </div>
+</div>
+
+<%= form_tag("tiles#create", method: "post", remote: true) do %>
+  <%= text_field_tag 'q', '', size: 75 %>
+
+  <%= submit_tag("Send Action") %>
+<% end %>
+
+
+
+
+<script>
+  userid = "/link" + <%=current_user.id%> ;
+</script>
+
+
+
+</div>
