@@ -201,10 +201,11 @@ def createnewroom(dir, roomdesc)
   @newtile.exits = YAML.dump(exitsvar)
   @newtile.save
   @currenttile = current_user.tile
-  if @currenttile.exits != nil
+  if @currenttile.exits
     exitsvar = YAML.load(@currenttile.exits)
     exitsvar.merge!({dir => @newtile.id})
   else
+    exitsvar = {}
     exitsvar = {dir => @newtile.id}
   end
   @currenttile.exits = YAML.dump(exitsvar)
