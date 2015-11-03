@@ -9,9 +9,7 @@ typeIsArray = ( value ) ->
         typeof value.splice is 'function' and
         not ( value.propertyIsEnumerable 'length' )
 
-#window.client = new Faye.Client('/faye')
-window.client = new Faye.Client('https://drakenfaye.herokuapp.com/faye
-')
+window.client = new Faye.Client('/faye')
 
 
 

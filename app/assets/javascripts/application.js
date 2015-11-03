@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require faye
+
 //= require tiles
 
 //= require_tree .
