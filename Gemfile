@@ -30,7 +30,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'devise'
 #gem 'faye-rails', '~> 2.0'
 gem 'thin'
-gem 'faye-rails', '~> 2.0'
+gem 'private_pub'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

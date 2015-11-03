@@ -14,7 +14,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require faye
+//= require private_pub
 
 //= require tiles
 

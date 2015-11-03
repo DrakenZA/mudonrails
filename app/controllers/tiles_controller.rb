@@ -18,7 +18,9 @@ def index
 
 
 def create
+
   @inputfromuser = params[:q]
+
   @playershere = ''
     case @inputfromuser
 
@@ -146,11 +148,8 @@ def sendtoplayer2(player, tosend)
   end
 
 
-  client = Faye::Client.new('http://localhost:8080/faye')
 
-  client.publish("/link#{player.id}", {
-  :message => packet
-  })
+  PrivatePub.publish_to "/link/#{player.id}", :chat_message => packet
 end
 ##############################################################################################
 
@@ -160,7 +159,7 @@ end
 def msgwholeroom(msg,mtile,type="notself")
   sendtoplayer2(current_user,"#{current_user.username} says,'#{msg}'") if type == "all"
   mtile.users.each do | l |
-    sendtoplayer2(l,msg) if l != current_user
+    sendtoplayer2(l,"#{current_user.username} says,'#{msg}'") if l != current_user
   end
 end
 ###################################################################################
