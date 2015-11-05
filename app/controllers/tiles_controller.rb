@@ -27,15 +27,16 @@ def create
 
     when "help"
       sendtoplayer2(current_user,["Commands:",
-        "South,East,North,West : Move around",
-        "look : Look around the room",
-        "say <text> : Broadcast a whole room",
-        "tell <user> <msg> : Send <msg> to <user>",
-        "bag : List items in your backpack",
+        "#{mud_colortext("South,East,North,West","green")} : Move around",
+        "#{mud_colortext("look","green")} : Look around the room",
+        "#{mud_colortext("say TEXT","green")} : Broadcast a whole room",
+        "#{mud_colortext("tell USER MSG","green")} : Send msg to user",
+        "#{mud_colortext("bag","Green")} : List items in your backpack",
         "Admin Commands:",
-        "editroom <property> <new value> : Change the value of a room",
-        "createroom <direction> <desc> : Create a new room",
-        "createitem <name> : lets you create an item","pickup <item> : Lets you pickup up a item"],
+        "#{mud_colortext("editroom Property NEW_VALUE","green")} : Change the value of a room",
+        "#{(mud_colortext"createroom DIRECTION DESC","green")} : Create a new room",
+        "#{mud_colortext("createitem NAME","green")}: lets you create an item",
+        "#{mud_colortext("pickup ITEM ","green")}: Lets you pickup up a item"],
         ["blue",
           "red",
           "red",
@@ -290,7 +291,7 @@ def mud_playerlook(player)
     @playershere << l.username + ' ' if l != player
   end
 
-  sendtoplayer2(player, [player.tile.desc,"Current exits:#{YAML.load(player.tile.exits)}","Current people here:#{@playershere}","current objects here:#{YAML.load(player.tile.backpack)}"],["blue","red","green"])
+  sendtoplayer2(player, [player.tile.desc,"Current exits:#{YAML.load(player.tile.exits).keys}","Current people here:#{@playershere}","current objects here:#{YAML.load(player.tile.backpack)}"],["blue","red","green"])
 
 end
 
@@ -318,6 +319,11 @@ if objectshere.include?(item)
 else
   sendtoplayer2(player,"No item with that name here")
 end
+end
+
+
+def mud_colortext(text,colour)
+text = "<span style=color:#{colour}>#{text}</span>"
 end
 
 #######OLD VERSION send text to player with (player name, message to send) #######
