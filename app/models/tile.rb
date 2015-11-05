@@ -138,6 +138,7 @@ def createnewroom(dir, roomdesc)
   @newtile.desc = roomdesc
   exitsvar = {reversedir(dir) => current_user.tile.id}
   @newtile.exits = YAML.dump(exitsvar)
+  @newtile.backpack = ""
   @newtile.save
   @currenttile = current_user.tile
   if @currenttile.exits
