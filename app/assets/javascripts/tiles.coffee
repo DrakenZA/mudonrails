@@ -10,6 +10,13 @@
 #        not ( value.propertyIsEnumerable 'length' )
 
 #window.client = new Faye.Client('/faye')
+
+$ ->
+  $('.panel-body').slimScroll
+    height: '500px'
+    start: 'bottom'
+
+
 jQuery ->
   PrivatePub.subscribe userid, (data, channel) ->
-    $('.panel-body').append("<ul>"+looper+"</ul>") for looper in data.chat_message
+    $('.panel-body').append(looper) for looper in data.chat

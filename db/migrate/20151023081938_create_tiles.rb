@@ -6,6 +6,7 @@ class CreateTiles < ActiveRecord::Migration
       t.integer :tiletype
       t.string :desc
       t.string :exits
+      t.string :backpack
 
       t.timestamps null: false
     end

@@ -1,4 +1,8 @@
 //publisher = client.publish(userid, {
 //  message:"<%=j render 'newentry', :desc => @tiledesc, :phere => @playershere %>"
 //});
-$("#q").val("")
+$("#q").val("");
+scrollTo_val = $('.panel-body').prop('scrollHeight') + 'px';
+$('.panel-body').slimScroll({
+  scrollTo: scrollTo_val
+});
