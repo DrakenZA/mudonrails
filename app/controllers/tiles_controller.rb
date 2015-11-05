@@ -227,9 +227,9 @@ end
 
 ####### send text to all players in tile (meesage to send, tile to send to) #######
 def msgwholeroom(msg,mtile,type="notself")
-  sendtoplayer2(current_user,"#{current_user.username} says,'#{msg}'") if type == "all"
+  sendtoplayer2(current_user,"#{msg}") if type == "all"
   mtile.users.each do | l |
-    sendtoplayer2(l,"#{current_user.username} says,'#{msg}'") if l != current_user
+    sendtoplayer2(l,"#{msg}") if l != current_user
   end
 end
 ###################################################################################
