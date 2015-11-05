@@ -5,8 +5,8 @@ class CreateTiles < ActiveRecord::Migration
       t.integer :ycoord
       t.integer :tiletype
       t.string :desc
-      t.string :exits
-      t.string :backpack
+      t.string :exits ,default: {}
+      t.string :backpack , default: []
 
       t.timestamps null: false
     end

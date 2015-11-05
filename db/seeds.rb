@@ -5,4 +5,4 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-Tile.create!(xcoord: 0, ycoord: 0, desc: "Starting room desc", backpack: "")
+Tile.create!(xcoord: 0, ycoord: 0, desc: "Starting room desc", backpack: "", exits: {})
