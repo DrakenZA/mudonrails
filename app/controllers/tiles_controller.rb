@@ -62,7 +62,7 @@ def create
       sendtoplayer2(current_user,"You Jumped!")
 
       when /^say\s+(.*)$/i
-      msgwholeroom($1,current_user.tile,"all")
+      msgwholeroom("<span style=color:red>#{$1}</span>",current_user.tile,"all")
 
 
       #tell
