@@ -11,15 +11,14 @@
 
 #window.client = new Faye.Client('/faye')
 
-#$ ->
-#  $('.panel-body').slimScroll
-#    height: '500px'
-#    start: 'bottom'
+$ ->
+  $('.panel-body').slimScroll
+    height: '500px'
+    start: 'bottom'
 
 
 jQuery ->
   PrivatePub.subscribe userid, (data, channel) ->
     $('.panel-body').append(looper) for looper in data.chat
     $('.panel-body').slimScroll
-      height: '500px'
-      start: 'bottom'
+      scrollTo: $('.panel-body').prop('scrollHeight')+10 + 'px'
