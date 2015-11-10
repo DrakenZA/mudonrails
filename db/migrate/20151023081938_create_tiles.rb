@@ -7,7 +7,7 @@ class CreateTiles < ActiveRecord::Migration
       t.string :desc
       t.string :exits ,default: {}
       t.string :backpack , default: []
-
+      t.string :npcs , default: []
       t.timestamps null: false
     end
   end

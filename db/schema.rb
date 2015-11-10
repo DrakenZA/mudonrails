@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20151026082645) do
     t.string   "desc"
     t.string   "exits",      default: "--- {}\n"
     t.string   "backpack",   default: "--- []\n"
+    t.string   "npcs",       default: "--- []\n"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 20151026082645) do
     t.string   "backpack",               default: "--- []\n"
     t.boolean  "admin",                  default: false
     t.integer  "tile_id"
+    t.integer  "hp",                     default: 100
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.string   "email",                  default: "",         null: false
