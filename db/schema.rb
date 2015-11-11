@@ -31,14 +31,15 @@ ActiveRecord::Schema.define(version: 20151026082645) do
     t.boolean  "admin",                  default: false
     t.integer  "tile_id"
     t.integer  "hp",                     default: 100
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-    t.string   "email",                  default: "",         null: false
-    t.string   "encrypted_password",     default: "",         null: false
+    t.string   "equipment",              default: "---\n:weapon: \n:chest: \n:legs: \n:arms: \n:helm: \n"
+    t.datetime "created_at",                                                                               null: false
+    t.datetime "updated_at",                                                                               null: false
+    t.string   "email",                  default: "",                                                      null: false
+    t.string   "encrypted_password",     default: "",                                                      null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,          null: false
+    t.integer  "sign_in_count",          default: 0,                                                       null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"

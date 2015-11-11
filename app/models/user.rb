@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   belongs_to :tile
   #validates_uniqueness_of :username
   serialize :backpack, Array
+  serialize :equipment, Hash
 
   require_dependency 'spell'
   require_dependency 'game_object'
@@ -86,6 +87,29 @@ class User < ActiveRecord::Base
 
 
 
+  def mud_equipmentlook()
+    itemson = []
+
+    test123 = self.equipment.keys
+    test123.each do |l|
+      if self.equipment[l] == nil then
+      sigh = l.to_s + " - Nothing"
+      itemson << sigh
+    else
+      sigh = l.to_s + " - " + self.equipment[l].item_name
+      itemson << sigh
+      end
+
+    end
+
+  self.sendtoplayer2(["Current items you have equipped", itemson ])
+  end
+
+
+
+
+
+
   def mud_backpacklook()
     itemsinbag = []
     self.backpack.each do |l|
@@ -99,7 +123,7 @@ class User < ActiveRecord::Base
 
     playershere = []
     self.tile.users.each do | l |
-      playershere << l.username + ' ' if l != self
+      playershere << l.username if l != self
     end
 
     itemsinbag = []
@@ -230,10 +254,12 @@ class User < ActiveRecord::Base
       return
     end
 
-
+      self.tile.msgwholeroom("#{self.username} vanishes into nothing",self)
       self.tile = Tile.find_by_id(tilegoto)
       self.save
       self.sendtoplayer2("You slip through the portal",["orange"])
+      self.tile.msgwholeroom("#{self.username} appears out of no where !",self)
+
       self.mud_playerlook()
 
   end
@@ -311,11 +337,21 @@ class User < ActiveRecord::Base
   end
 
   def mud_attack1(target)
-
+    targettoattacktype = 'NPC'
     worldtile = self.tile.npcs
     targettoattack = worldtile.select { | h | h.npc_name == target }
     targettoattack = targettoattack[0]
 
+
+    if targettoattack == [] || targettoattack == nil
+      #targettoattack = User.find_by_username(target)
+      worldtile = self.tile.users
+      targettoattack = worldtile.select { | h | h.username == target }
+      targettoattack = targettoattack[0]
+
+      targettoattacktype = 'Player'
+
+    end
 
     if targettoattack == [] || targettoattack == nil
       self.sendtoplayer2("Nothing with that name")
@@ -323,47 +359,100 @@ class User < ActiveRecord::Base
     end
 
 
-      targettoattack.hp = targettoattack.hp - 10
-      self.sendtoplayer2("You hit #{targettoattack.npc_name}")
+#####Grabbing info on player weapon
+    damagetodo = 10
+    damagetodo = self.equipment[:weapon].damage if self.equipment[:weapon] != nil
 
 
-       targettoattack.aggro(self)
+      targettoattack.hp = targettoattack.hp - damagetodo
+      self.sendtoplayer2("You hit #{targettoattack.username} for #{damagetodo}") if targettoattacktype == "Player"
+      self.sendtoplayer2("You hit #{targettoattack.npc_name} for #{damagetodo}") if targettoattacktype == "NPC"
+#####################################
 
 
+       #targettoattack.aggro(self)
 
+
+##############check for death
       if targettoattack.hp < 1
-        self.sendtoplayer2("You killed #{targettoattack.npc_name}")
-        targettoattack.removefromworld()
-        self.tile.npcs.delete_at(self.tile.npcs.find_index{|h| h.npc_name == targettoattack.npc_name})
-        self.tile.save
+        self.sendtoplayer2("You killed #{targettoattack.npc_name}") if targettoattacktype == "NPC"
+        targettoattack.removefromworld() if targettoattacktype == "NPC"
+        targettoattack.death if targettoattacktype == "Player"
         return
       end
+####################
 
 
-      if self.hp < 1
-        self.sendtoplayer2("#{targettoattack.npc_name} killed you")
-      end
 
-
+###########saving data if no deaths
+      if targettoattacktype == "Player"
+      targettoattack.save
+      targettoattack.sendtoplayer2("#{self.username} just hit you for #{damagetodo} !")
+      #self.tile.users[self.tile.users.find_index{|h| h.username == target}].hp = targettoattack.hp
+      else
       self.tile.npcs[self.tile.npcs.find_index{|h| h.npc_name == targettoattack.npc_name}].hp = targettoattack.hp
       self.tile.save
-      targettoattack = nil
-
-
-
-      EM.defer do
-        sleep 3
-        self.sendtoplayer2('Attack ready')
       end
+      targettoattack = nil
+###########################
+
+
+    #  EM.defer do
+    #    sleep 3
+    #    self.sendtoplayer2('Attack ready')
+    #  end
 
 
   end
 
 
 
+def death()
+self.hp = 100
+self.tile.msgwholeroom("#{self.username} just died !",self)
+self.sendtoplayer2("YOU WERE JUST KILLED",["RED"])
+self.tile = Tile.find_by_id(1)
+self.mud_playerlook
+self.save
+end
+
+
+def mud_playerequip (item)
+
+  objectshere = self.backpack
+  itemtopickup = objectshere.select { | h | h.item_name == item }
+  itemtopickup = itemtopickup[0]
+
+if itemtopickup == nil || itemtopickup.movable = false
+  self.sendtoplayer2("No item with that name here,or it can not be taken")
+  return
+end
+
+
+  typeofequip = "#{itemtopickup.class}".downcase
+  if ["weapon"].include?(typeofequip) == false
+    sendtoplayer2("You cant equip that!")
+    return
+  end
 
 
 
+  objectshere.delete_at(objectshere.index(itemtopickup) || objectshere.length)
+  if self.equipment[typeofequip.parameterize.underscore.to_sym] != nil
+    swapper = self.equipment[typeofequip.parameterize.underscore.to_sym]
+    objectshere.push(swapper)
+    self.sendtoplayer2("You removed #{swapper.item_name}")
+  end
+
+  self.equipment[typeofequip.parameterize.underscore.to_sym] = itemtopickup
+
+
+
+  self.backpack = objectshere
+  self.save
+  self.sendtoplayer2("You equipped #{item} to #{typeofequip}")
+
+end
 
 
 

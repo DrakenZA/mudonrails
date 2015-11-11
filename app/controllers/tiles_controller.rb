@@ -83,7 +83,7 @@ def create
       when "look"
       current_user.mud_playerlook()
 
-    
+
 
       when /^say\s+(.*)$/i
       current_user.tile.msgwholeroom("#{current_user.username} said: <span style=color:red>#{$1}</span>",current_user,"all")
@@ -98,6 +98,8 @@ def create
 
       when "bag"
         current_user.mud_backpacklook()
+      when "equipment"
+        current_user.mud_equipmentlook()
 
 
 
@@ -136,6 +138,9 @@ def create
 
       when /^pickup\s+(.*)$/i
       current_user.mud_playerpickup($1)
+
+    when /^equip\s+(.*)$/i
+    current_user.mud_playerequip($1)
 
 
       when /^createroom\s+(\w+)\s+(.*)$/i

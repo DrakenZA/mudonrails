@@ -13,7 +13,7 @@ class Spell
 
 def castspell(player)
   player.sendtoplayer2(["#{player.username} #{self.spell_effect}"])
-
+#  spell_effect.constantize
 
 end
 
